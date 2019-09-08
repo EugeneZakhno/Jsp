@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="jsp" default="main">
+
+    <property file="build.properties"/>
+
+    <target name="build-project">
+        <mkdir dir="${build.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false">
+            <classpath>
+                <fileset dir="${lib.dir}">
+                    <include name="**/*.jar"/>
+                </fileset>
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="copy" depends="build-project">
+        <copy todir="web/WEB-INF/lib">
+            <fileset dir="${lib.dir}"/>
+        </copy>
+    </target>
+
+    <target name="war" depends="copy">
+        <mkdir dir="${dist.dir}"/>
+        <war destfile="${dist.dir}/${project.name}.war" webxml="web/WEB-INF/web.xml">
+            <fileset dir="${web.content.dir}"/>
+        </war>
+    </target>
+
+    <target name="main" depends="war"/>
+
+</project>
